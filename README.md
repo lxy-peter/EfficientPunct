@@ -1,6 +1,6 @@
 # EfficientPunct
 
-This repository holds the code for our paper "Efficient Ensemble Architecture for Multimodal Embeddings in Punctuation Restoration using Time-Delay Neural Networks", submitted to ASRU 2023.
+This repository holds the code for EfficientPunct, presented in our paper "Efficient Ensemble Architecture for Multimodal Embeddings in Punctuation Restoration using Time-Delay Neural Networks".
 
 Some familiarity with Kaldi is highly recommended for usage of the EfficientPunct framework. You can find documentation of Kaldi at [https://kaldi-asr.org/](https://kaldi-asr.org/).
 
