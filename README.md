@@ -10,7 +10,7 @@ Some familiarity with Kaldi is highly recommended for usage of the EfficientPunc
 2. Run the following commands:
 ```bash
 cd kaldi/egs/tedlium
-git clone https://github.com/GitHubAccountAnonymous/EfficientPunct
+git clone https://github.com/lxy-peter/EfficientPunct
 mv EfficientPunct/* s5_r3/
 rm -rf EfficientPunct
 # The framework of EfficientPunct is now located in kaldi/egs/tedlium/s5_r3.
