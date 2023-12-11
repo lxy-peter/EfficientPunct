@@ -19,8 +19,6 @@ class BERTFineTuneForPunct(nn.Module):
     def forward(self, x):
         
         x = self.bert_last_hidden(x)
-        print(x.shape)
-        raise RuntimeError
         
         x = self.lin1(x)
         x = F.relu(x)
