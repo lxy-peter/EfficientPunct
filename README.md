@@ -60,3 +60,20 @@ To evaluate the ensemble, please use `ensemble_predict.py`.
 ## Models
 
 We provide pretrained models `bert/bert.pt` and `tdnn/tdnn.pt` so that you do not have to re-train everything from scratch. By default, `tdnn_predict.py` and `ensemble_predict.py` both use these models, but you may alter the code to use your custom model.
+
+## Cite Us
+
+If you use EfficientPunct in your research, please cite our paper as follows:
+```
+@article{liu2023efficient,
+  title={Efficient Ensemble Architecture for Multimodal Acoustic and Textual Embeddings in Punctuation Restoration using Time-Delay Neural Networks},
+  author={Liu, Xing Yi and Beigi, Homayoon},
+  journal={arXiv preprint arXiv:2302.13376},
+  year={2023}
+}
+```
+Thank you for your support! We hope you found our work to be useful.
+
+## Contact
+
+If you have any questions or suggestions, please feel free to email [liu.peter@columbia.edu](mailto:liu.peter@columbia.edu).
