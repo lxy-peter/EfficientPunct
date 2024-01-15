@@ -1,79 +1,53 @@
-# EfficientPunct
+# Punctuation Restoration
 
-This repository holds the code for EfficientPunct, presented in our paper "Efficient Ensemble for Multimodal Punctuation Restoration Using Time-Delay Neural Network".
+## Data
 
-Some familiarity with Kaldi is highly recommended for usage of the EfficientPunct framework. You can find documentation of Kaldi at [https://kaldi-asr.org/](https://kaldi-asr.org/).
+This section is about the `data/` directory formatting and its contents.
 
-## Installation
+Datasets should be placed inside `data/` as subdirectories. Each dataset should contain its splits, such as `train/`, `dev/`, and `test/`. Please make sure that you do not have a split named `feat/`, as this is a special keyword used in the framework to store embeddings. Each split should then contain an `audio/` folder, a `text/` folder, and an `utt2spk` file. The `audio/` and `text/` folders should have `.wav` speech audio and `.txt` transcript files inside, respectively, and these files' names should be utterance IDs `[utt-id]`. Utterance IDs should have speaker ID `[spk-id]` as prefixes. `utt2spk` should be a text file in which each line is of the format:
+```
+[spk-id] [utt-id]
+```
+`data`'s directory structure should look like this:
+```
+data/
+|---dataset1/
+|   |---train/
+|   |   |---audio/
+|   |   |   |---[utt-id1].wav
+|   |   |   |---[utt-id2].wav
+|   |   |   |---...
+|   |   |---text/
+|   |   |   |---[utt-id1].txt
+|   |   |   |---[utt-id2].txt
+|   |   |   |---...
+|   |   |---utt2spk
+|   |---...
+|---...
+```
+In the code's comments, the term *standard data format* is used to refer to this directory structure.
 
-1. Install [Kaldi](https://kaldi-asr.org/) by following instructions [here](https://github.com/kaldi-asr/kaldi). Let the root Kaldi directory be referred to in the following documentation as `kaldi/`.
-2. Run the following commands:
+## Installing Kaldi
+
+1. In `pr/`, run
 ```bash
-cd kaldi/egs/tedlium
-git clone https://github.com/lxy-peter/EfficientPunct
-mv EfficientPunct/* s5_r3/
-rm -rf EfficientPunct
-# The framework of EfficientPunct is now located in kaldi/egs/tedlium/s5_r3.
-cd s5_r3
+git clone https://github.com/kaldi-asr/kaldi
 ```
-3. Download an additional zip file from [this Google Drive link](https://drive.google.com/file/d/1CrBgWyZEI9xDG3OBsFUtL_jAKhxv1_MS/view?usp=share_link) and place it inside `kaldi/egs/tedlium/s5_r3/`.
-4. Run the following commands:
+and proceed with installing [Kaldi](https://github.com/kaldi-asr/kaldi).
+2. Download an additional zip file from [this Google Drive link](https://drive.google.com/file/d/1yfxuqtXrFMi1GhDl9dDxhHbVQE6-tXlf/view?usp=sharing) and place it inside `extras/`. Then, run:
 ```bash
-unzip additional.zip
-rm additional.zip cmd.sh steps utils
-rm -r conf
-mv additional/* ./
-rm -r additional
+bash extras/kaldi_setup.sh
 ```
+3. Depending on what models you need, pretrained ones are available for download [here](https://drive.google.com/drive/folders/1YospBmQgXOWE3C5PexAm_3UeJnU1HMXD?usp=sharing). Please place them in the same directory under `models/` as found in the download folder.
 
-From now on, we will refer to the `kaldi/egs/tedlium/s5_r3` directory as simply `s5_r3/`.
+## Running the Main Program
 
-## Data Preparation
-
-Depending on whether you're using data for training or inference, you should use either the `custom_train` and `custom_train_text` or `custom_predict` and `custom_predict_text` subdirectories, respectively. For example, `s5_r3/data` and `s5_r3/db` contain these subdirectories to separately hold each data split. In the following documentation, let `[split]` be either `train` or `predict`, depending on your situation.
-
-- Place each utterance's audio (`.wav` files) in `s5_r3/db/custom_[split]`. Each filename should be of the format `[utterance-id].wav`. 
-- Place each utterance's text (`.txt` files) in `s5_r3/db/custom_[split]_text`. Each filename should be of the format `[utterance-id].txt`, and each file should simply contain a single line with the utterance's transcription.
-- Create `s5_r3/data/custom_[split]/utt2spk`, a text file with one line for each utterance, and each line should be of the format `[utterance-id] [spk-id]`.
-- Create `s5_r3/data/custom_[split]/wav.scp`, a text file with one line for each utterance, and each line should be of the format `[utterance-id] [fully-qualified-path-to-utterance's-wav-file]`.
-
-Here,
-- `[utterance-id]` is a unique identifier for the utterance.
-- `[spk-id]` is the speaker ID. This should be unique for each speaker.
-
-This data preparation process is exactly the same as according to Kaldi's guidance. Thus, if you run into issues, you may consult [https://kaldi-asr.org/doc/data_prep.html](https://kaldi-asr.org/doc/data_prep.html).
-
-## Scripts
-
-`train.sh` and `predict.sh` are full scripts to train and predict using our framework, respectively, from start to finish. They are both structured in stages, removing the need to run already completed stages if a later stage fails. This is structured in the same fashion as Kaldi scripts. Crucially, the final stage in each of `train.sh` and `predict.sh` calls `tdnn_train.py` and `tdnn_predict.py`, respectively.
-
-To run either script, you will need to prepare the corresponding data `[split]` according to the Data Preparation section. These scripts include both the embedding extraction and TDNN forward passing stages. Trained TDNNs and their evaluation results are saved in `s5_r3/tdnn/`.
-
-Run the scripts using Bash:
+To run the main program, please execute `.sh` files in the `scripts/` directory. For example, to use `scripts/run.sh`, run:
 ```bash
-./train.sh
-./predict.sh
+bash scripts/run.sh &
 ```
+By default, messages and outputs will be saved to `run.log`.
 
-To evaluate the ensemble, please use `ensemble_predict.py`.
+The main program's behavior can be customized by modifying arguments in the `.sh` files, as well as the configuration file specified by the `config_path` argument. Arguments and configuration parameters will be checked by the main program for validity. However, even passing all validity checks does not guarantee that the program will run successfully. On the other hand, failing any validity check guarantees that the program will fail.
 
-## Models
-
-We provide pretrained models `bert/bert.pt` and `tdnn/tdnn.pt` so that you do not have to re-train everything from scratch. By default, `tdnn_predict.py` and `ensemble_predict.py` both use these models, but you may alter the code to use your custom model.
-
-## Cite Us
-
-If you use EfficientPunct in your research, please cite our paper as follows:
-```
-@article{liu2023efficient,
-  title={Efficient Ensemble Architecture for Multimodal Acoustic and Textual Embeddings in Punctuation Restoration using Time-Delay Neural Networks},
-  author={Liu, Xing Yi and Beigi, Homayoon},
-  journal={arXiv preprint arXiv:2302.13376},
-  year={2023}
-}
-```
-Thank you for your support! We hope you found our work to be useful.
-
-## Contact
-
-If you have any questions or suggestions, please feel free to email [liu.peter@columbia.edu](mailto:liu.peter@columbia.edu).
+Certain arguments (e.g. `optimizer` and `batch_size`) are applicable only when `mode='train'`.
