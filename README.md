@@ -65,12 +65,16 @@ We provide pretrained models `bert/bert.pt` and `tdnn/tdnn.pt` so that you do no
 
 If you use EfficientPunct in your research, please cite our paper as follows:
 ```
-@article{liu2023efficient,
-  title={Efficient Ensemble Architecture for Multimodal Acoustic and Textual Embeddings in Punctuation Restoration using Time-Delay Neural Networks},
+@INPROCEEDINGS{10418445,
   author={Liu, Xing Yi and Beigi, Homayoon},
-  journal={arXiv preprint arXiv:2302.13376},
-  year={2023}
-}
+  booktitle={2024 18th International Conference on Ubiquitous Information Management and Communication (IMCOM)}, 
+  title={Efficient Ensemble for Multimodal Punctuation Restoration using Time-Delay Neural Network}, 
+  year={2024},
+  volume={},
+  number={},
+  pages={1-6},
+  keywords={Training;Convolutional codes;Text recognition;Neural networks;Acoustics;Computational efficiency;Task analysis;speech recognition;punctuation restoration;multimodal learning;time-delay neural network;ensemble},
+  doi={10.1109/IMCOM60618.2024.10418445}}
 ```
 Thank you for your support! We hope you found our work to be useful.
 
